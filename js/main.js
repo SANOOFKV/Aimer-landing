@@ -15,6 +15,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Trigger popup on button click
+    const popupTriggers = document.querySelectorAll('.trigger-popup');
+    popupTriggers.forEach(trigger => {
+        trigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (popup) {
+                popup.classList.add('show');
+                popupShown = true; // Prevents the scroll trigger from firing later
+            }
+        });
+    });
+
     // Close button click
     if(closeBtn) {
         closeBtn.addEventListener('click', () => {
