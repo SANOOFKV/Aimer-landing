@@ -41,12 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const lastName  = nameParts.slice(1).join(' ') || '';
 
         const payload = [
-            { Attribute: 'FirstName',           Value: firstName },
-            { Attribute: 'LastName',            Value: lastName  },
-            { Attribute: 'Phone',               Value: phone     },
-            { Attribute: 'mx_Current_Status',   Value: status    },
-            { Attribute: 'mx_Goal_After_UGBIP', Value: goal      },
-            { Attribute: 'Source',              Value: 'UGBIP Landing Page' },
+            { Attribute: 'FirstName', Value: firstName },
+            { Attribute: 'LastName',  Value: lastName  },
+            { Attribute: 'Phone',     Value: phone     },
+            { Attribute: 'Source',    Value: 'UGBIP Landing Page' },
         ];
 
         // Loading state
