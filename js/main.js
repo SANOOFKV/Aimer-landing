@@ -33,9 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
     async function submitLead(formEl, btnEl) {
         const name   = formEl.querySelector('[name="name"]').value.trim();
         const phone  = formEl.querySelector('[name="phone"]').value.trim();
-        const status = formEl.querySelector('[name="status"]')?.value || '';
-        const goal   = formEl.querySelector('[name="goal"]')?.value || '';
-
         const nameParts = name.split(' ');
         const firstName = nameParts[0];
         const lastName  = nameParts.slice(1).join(' ') || '';
