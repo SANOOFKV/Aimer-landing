@@ -49,16 +49,25 @@ export default async function handler(req, res) {
             body: JSON.stringify(payload),
         });
 
-        const data = await lsqResponse.json();
+        // Read as text first — LeadSquared sometimes returns an empty body on success
+        const rawText = await lsqResponse.text();
+        let data = null;
 
-        if (!lsqResponse.ok) {
-            console.error('LeadSquared error:', data);
-            return res.status(502).json({ error: 'Failed to submit lead to CRM.' });
+        try {
+            data = rawText ? JSON.parse(rawText) : null;
+        } catch (_) {
+            // Response wasn't JSON — that's okay
         }
 
+        if (!lsqResponse.ok) {
+            console.error('LeadSquared error:', data || rawText);
+            return res.status(502).json({ error: 'Failed to submit lead to CRM.', detail: data || rawText });
+        }
+
+        console.log('LeadSquared success:', data || rawText);
         return res.status(200).json({ success: true, message: 'Lead submitted successfully.' });
     } catch (err) {
-        console.error('Network error:', err);
-        return res.status(500).json({ error: 'Internal server error.' });
+        console.error('Network error:', err.message);
+        return res.status(500).json({ error: 'Internal server error.', detail: err.message });
     }
 }
