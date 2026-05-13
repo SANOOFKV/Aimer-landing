@@ -41,16 +41,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const lastName  = nameParts.slice(1).join(' ') || '';
 
         const email  = formEl.querySelector('[name="email"]')?.value.trim() || '';
+        const status = formEl.querySelector('[name="status"]')?.value || '';
+        const goal   = formEl.querySelector('[name="goal"]')?.value || '';
 
         const payload = [
-            { Attribute: 'FirstName',     Value: firstName },
-            { Attribute: 'LastName',      Value: lastName  },
-            { Attribute: 'Phone',         Value: phone     },
-            { Attribute: 'EmailAddress',  Value: email     },
-            { Attribute: 'Source',        Value: 'UGBIP Landing Page' },
+            { Attribute: 'FirstName',        Value: firstName },
+            { Attribute: 'LastName',         Value: lastName  },
+            { Attribute: 'Phone',            Value: phone     },
+            { Attribute: 'EmailAddress',     Value: email     },
+            { Attribute: 'mx_Qualification', Value: status    },
+            { Attribute: 'Notes',            Value: goal      },
+            { Attribute: 'Source',           Value: 'UGBIP Landing Page' },
         ];
 
-        console.log('Submitting lead:', { firstName, lastName, phone, email });
+        console.log('Submitting lead:', { firstName, lastName, phone, email, status, goal });
 
         // Loading state
         const originalText = btnEl.textContent;
