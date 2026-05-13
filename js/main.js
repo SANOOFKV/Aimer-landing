@@ -103,12 +103,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Trigger PDF download if applicable
                 if (shouldDownload) {
-                    const link = document.createElement('a');
-                    link.href = 'UGBIP-Brochure.pdf';
-                    link.download = 'UGBIP_Brochure.pdf';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
+                    try {
+                        const link = document.createElement('a');
+                        link.href = 'UGBIP-Brochure.pdf';
+                        link.download = 'UGBIP_Brochure.pdf';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } catch (downloadErr) {
+                        console.error('Download failed or blocked by browser:', downloadErr);
+                        window.open('UGBIP-Brochure.pdf', '_blank'); // fallback
+                    }
                 }
 
                 setTimeout(() => {
