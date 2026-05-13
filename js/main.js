@@ -43,12 +43,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const email  = formEl.querySelector('[name="email"]')?.value.trim() || '';
 
         const payload = [
-            { Attribute: 'FirstName', Value: firstName },
-            { Attribute: 'LastName',  Value: lastName  },
-            { Attribute: 'Phone',     Value: phone     },
-            { Attribute: 'EmailAddress', Value: email  },
-            { Attribute: 'Source',    Value: 'UGBIP Landing Page' },
+            { Attribute: 'FirstName',     Value: firstName },
+            { Attribute: 'LastName',      Value: lastName  },
+            { Attribute: 'Phone',         Value: phone     },
+            { Attribute: 'EmailAddress',  Value: email     },
+            { Attribute: 'Source',        Value: 'UGBIP Landing Page' },
         ];
+
+        console.log('Submitting lead:', { firstName, lastName, phone, email });
 
         // Loading state
         const originalText = btnEl.textContent;
