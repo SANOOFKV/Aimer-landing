@@ -3,10 +3,8 @@ document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
 
     // ─── LeadSquared Config ───────────────────────────────────────────────────
-    const LSQ_ACCESS_KEY = 'u$r0f83abac5915f1175344c491a1481e4a';
-    const LSQ_SECRET_KEY = 'e23030c4b0cc1edc251ad61ce5340a9f6499c21d';
-    const LSQ_HOST       = 'api-in21.leadsquared.com';
-    const LSQ_URL        = `https://${LSQ_HOST}/v2/LeadManagement.svc/Lead.Create?accessKey=${LSQ_ACCESS_KEY}&secretKey=${LSQ_SECRET_KEY}`;
+    const LSQ_URL = 'https://api-in21.leadsquared.com/v2/LeadManagement.svc/Lead.Create?accessKey=u$r0f83abac5915f1175344c491a1481e4a&secretKey=e23030c4b0cc1edc251ad61ce5340a9f6499c21d';
+
 
     // ─── Popup Logic ──────────────────────────────────────────────────────────
     const popup    = document.getElementById('scroll-popup');
