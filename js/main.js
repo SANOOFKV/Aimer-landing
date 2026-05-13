@@ -72,9 +72,9 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
 
         // Attach UTM parameters if they exist
-        if (utmSource)   payload.push({ Attribute: 'mx_utm_source',   Value: utmSource });
-        if (utmMedium)   payload.push({ Attribute: 'mx_utm_medium',   Value: utmMedium });
-        if (utmCampaign) payload.push({ Attribute: 'mx_utm_campaign', Value: utmCampaign });
+        if (utmSource)   payload.push({ Attribute: 'SourceContent',  Value: utmSource });
+        if (utmMedium)   payload.push({ Attribute: 'SourceMedium',   Value: utmMedium });
+        if (utmCampaign) payload.push({ Attribute: 'SourceCampaign', Value: utmCampaign });
 
         console.log('Submitting lead:', { firstName, lastName, phone, email, status, goal, utmSource, utmMedium, utmCampaign });
 
