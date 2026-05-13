@@ -40,10 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const firstName = nameParts[0];
         const lastName  = nameParts.slice(1).join(' ') || '';
 
+        const email  = formEl.querySelector('[name="email"]')?.value.trim() || '';
+
         const payload = [
             { Attribute: 'FirstName', Value: firstName },
             { Attribute: 'LastName',  Value: lastName  },
             { Attribute: 'Phone',     Value: phone     },
+            { Attribute: 'EmailAddress', Value: email  },
             { Attribute: 'Source',    Value: 'UGBIP Landing Page' },
         ];
 
