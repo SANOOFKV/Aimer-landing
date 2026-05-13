@@ -20,8 +20,8 @@
             <h1 class="display-title">Under Graduate Business Integrated Program</h1>
             <p class="hero-subtext">A three-year, industry-embedded business program built around internships, global exposure, leadership training, and real-world execution.</p>
             <div class="hero-actions">
-                <a href="#apply" class="btn btn-primary trigger-popup">Apply Now</a>
-                <a href="#apply" class="btn btn-ghost">Download Brochure</a>
+                <a href="#" class="btn btn-primary trigger-popup" data-intent="apply">Apply Now</a>
+                <a href="#" class="btn btn-ghost trigger-popup" data-intent="brochure">Download Brochure</a>
             </div>
         </div>
     </section>
@@ -253,7 +253,7 @@
             <button class="popup-close" id="popup-close">
                 <i data-lucide="x"></i>
             </button>
-            <h3 class="section-title" style="font-size: 2rem; margin-bottom: 1.5rem;">Interested in UGBIP?</h3>
+            <h3 class="section-title" id="popup-title" style="font-size: 2rem; margin-bottom: 1.5rem;">Interested in UGBIP?</h3>
             <form class="cta-form">
                 <div class="form-group">
                     <label for="popup-name">Name</label>
@@ -293,7 +293,7 @@
                         <i data-lucide="chevron-down" class="select-icon"></i>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Download Brochure</button>
+                <button type="submit" id="popup-submit-btn" class="btn btn-primary btn-block">Apply Now</button>
             </form>
         </div>
     </div>

@@ -18,9 +18,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    const popupTitle = document.getElementById('popup-title');
+    const popupBtn   = document.getElementById('popup-submit-btn');
+
     document.querySelectorAll('.trigger-popup').forEach(trigger => {
         trigger.addEventListener('click', (e) => {
             e.preventDefault();
+            
+            // Dynamic popup content based on button clicked
+            const intent = trigger.getAttribute('data-intent');
+            if (intent === 'brochure') {
+                if(popupTitle) popupTitle.textContent = 'Download Brochure';
+                if(popupBtn) popupBtn.textContent = 'Download Brochure';
+            } else {
+                if(popupTitle) popupTitle.textContent = 'Apply for UGBIP';
+                if(popupBtn) popupBtn.textContent = 'Apply Now';
+            }
+
             popup.classList.add('show');
             popupShown = true;
         });
