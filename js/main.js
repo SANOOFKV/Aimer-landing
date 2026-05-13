@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const popup    = document.getElementById('scroll-popup');
     const closeBtn = document.getElementById('popup-close');
     let popupShown = false;
+    let currentIntent = 'apply'; // Track what triggered the popup
 
     // ─── UTM Tracking ─────────────────────────────────────────────────────────
     const urlParams = new URLSearchParams(window.location.search);
@@ -19,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('scroll', () => {
         if (window.scrollY > 400 && !popupShown) {
+            currentIntent = 'apply'; // Default to apply on scroll
+            if(popupTitle) popupTitle.textContent = 'Apply for UGBIP';
+            if(popupBtn) popupBtn.textContent = 'Apply Now';
             popup.classList.add('show');
             popupShown = true;
         }
@@ -33,7 +37,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Dynamic popup content based on button clicked
             const intent = trigger.getAttribute('data-intent');
-            if (intent === 'brochure') {
+            currentIntent = intent || 'apply';
+
+            if (currentIntent === 'brochure') {
                 if(popupTitle) popupTitle.textContent = 'Download Brochure';
                 if(popupBtn) popupBtn.textContent = 'Download Brochure';
             } else {
@@ -50,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (popup) popup.addEventListener('click', (e) => { if (e.target === popup) popup.classList.remove('show'); });
 
     // ─── Lead Submit ──────────────────────────────────────────────────────────
-    async function submitLead(formEl, btnEl) {
+    async function submitLead(formEl, btnEl, shouldDownload = false) {
         const name   = formEl.querySelector('[name="name"]').value.trim();
         const phone  = formEl.querySelector('[name="phone"]').value.trim();
         const nameParts = name.split(' ');
@@ -94,6 +100,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 btnEl.textContent = '✓ Submitted!';
                 btnEl.style.backgroundColor = '#33A2B7';
                 formEl.reset();
+
+                // Trigger PDF download if applicable
+                if (shouldDownload) {
+                    const link = document.createElement('a');
+                    link.href = 'UGBIP-Brochure.pdf';
+                    link.download = 'UGBIP_Brochure.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+
                 setTimeout(() => {
                     popup && popup.classList.remove('show');
                     btnEl.textContent = originalText;
@@ -121,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (popupForm) {
         popupForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            submitLead(popupForm, popupForm.querySelector('[type="submit"]'));
+            submitLead(popupForm, popupForm.querySelector('[type="submit"]'), currentIntent === 'brochure');
         });
     }
 
@@ -130,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (mainForm) {
         mainForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            submitLead(mainForm, mainForm.querySelector('[type="submit"]'));
+            submitLead(mainForm, mainForm.querySelector('[type="submit"]'), false);
         });
     }
 });
