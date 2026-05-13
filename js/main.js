@@ -11,6 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.getElementById('popup-close');
     let popupShown = false;
 
+    // ─── UTM Tracking ─────────────────────────────────────────────────────────
+    const urlParams = new URLSearchParams(window.location.search);
+    const utmSource   = urlParams.get('utm_source')   || '';
+    const utmMedium   = urlParams.get('utm_medium')   || '';
+    const utmCampaign = urlParams.get('utm_campaign') || '';
+
     window.addEventListener('scroll', () => {
         if (window.scrollY > 400 && !popupShown) {
             popup.classList.add('show');
@@ -65,7 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
             { Attribute: 'Source',           Value: 'UGBIP Landing Page' },
         ];
 
-        console.log('Submitting lead:', { firstName, lastName, phone, email, status, goal });
+        // Attach UTM parameters if they exist
+        if (utmSource)   payload.push({ Attribute: 'mx_utm_source',   Value: utmSource });
+        if (utmMedium)   payload.push({ Attribute: 'mx_utm_medium',   Value: utmMedium });
+        if (utmCampaign) payload.push({ Attribute: 'mx_utm_campaign', Value: utmCampaign });
+
+        console.log('Submitting lead:', { firstName, lastName, phone, email, status, goal, utmSource, utmMedium, utmCampaign });
 
         // Loading state
         const originalText = btnEl.textContent;
