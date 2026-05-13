@@ -2,12 +2,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Lucide icons
     lucide.createIcons();
 
-    // Popup Logic
-    const popup = document.getElementById('scroll-popup');
+    // ─── LeadSquared Config ───────────────────────────────────────────────────
+    const LSQ_ACCESS_KEY = 'u$r0f83abac5915f1175344c491a1481e4a';
+    const LSQ_SECRET_KEY = 'e23030c4b0cc1edc251ad61ce5340a9f6499c21d';
+    const LSQ_HOST       = 'api-in21.leadsquared.com';
+    const LSQ_URL        = `https://${LSQ_HOST}/v2/LeadManagement.svc/Lead.Create?accessKey=${LSQ_ACCESS_KEY}&secretKey=${LSQ_SECRET_KEY}`;
+
+    // ─── Popup Logic ──────────────────────────────────────────────────────────
+    const popup    = document.getElementById('scroll-popup');
     const closeBtn = document.getElementById('popup-close');
     let popupShown = false;
 
-    // Show popup after scrolling 400px
     window.addEventListener('scroll', () => {
         if (window.scrollY > 400 && !popupShown) {
             popup.classList.add('show');
@@ -15,60 +20,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Trigger popup on button click
-    const popupTriggers = document.querySelectorAll('.trigger-popup');
-    popupTriggers.forEach(trigger => {
+    document.querySelectorAll('.trigger-popup').forEach(trigger => {
         trigger.addEventListener('click', (e) => {
             e.preventDefault();
-            if (popup) {
-                popup.classList.add('show');
-                popupShown = true;
-            }
+            popup.classList.add('show');
+            popupShown = true;
         });
     });
 
-    // Close button click
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            popup.classList.remove('show');
-        });
-    }
+    if (closeBtn) closeBtn.addEventListener('click', () => popup.classList.remove('show'));
+    if (popup) popup.addEventListener('click', (e) => { if (e.target === popup) popup.classList.remove('show'); });
 
-    // Close on click outside the popup content
-    if (popup) {
-        popup.addEventListener('click', (e) => {
-            if (e.target === popup) {
-                popup.classList.remove('show');
-            }
-        });
-    }
-
-    // ─── Form Submission Handler ──────────────────────────────────────────────
+    // ─── Lead Submit ──────────────────────────────────────────────────────────
     async function submitLead(formEl, btnEl) {
         const name   = formEl.querySelector('[name="name"]').value.trim();
         const phone  = formEl.querySelector('[name="phone"]').value.trim();
         const status = formEl.querySelector('[name="status"]')?.value || '';
         const goal   = formEl.querySelector('[name="goal"]')?.value || '';
 
-        // Show loading state
+        const nameParts = name.split(' ');
+        const firstName = nameParts[0];
+        const lastName  = nameParts.slice(1).join(' ') || '';
+
+        const payload = [
+            { Attribute: 'FirstName',           Value: firstName },
+            { Attribute: 'LastName',            Value: lastName  },
+            { Attribute: 'Phone',               Value: phone     },
+            { Attribute: 'mx_Current_Status',   Value: status    },
+            { Attribute: 'mx_Goal_After_UGBIP', Value: goal      },
+            { Attribute: 'Source',              Value: 'UGBIP Landing Page' },
+        ];
+
+        // Loading state
         const originalText = btnEl.textContent;
         btnEl.textContent = 'Submitting…';
         btnEl.disabled = true;
 
         try {
-            const res = await fetch('/api/submit-lead', {
+            const res = await fetch(LSQ_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, phone, status, goal }),
+                body: JSON.stringify(payload),
             });
 
-            const data = await res.json();
-
-            if (res.ok && data.success) {
+            if (res.ok) {
                 btnEl.textContent = '✓ Submitted!';
                 btnEl.style.backgroundColor = '#33A2B7';
                 formEl.reset();
-                // Close popup if it's open
                 setTimeout(() => {
                     popup && popup.classList.remove('show');
                     btnEl.textContent = originalText;
@@ -76,7 +74,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     btnEl.style.backgroundColor = '';
                 }, 2500);
             } else {
-                throw new Error(data.error || 'Submission failed.');
+                const err = await res.text();
+                console.error('LeadSquared error:', err);
+                throw new Error('CRM error');
             }
         } catch (err) {
             btnEl.textContent = '✗ Error — Try again';
