@@ -123,9 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Redirect to thank you page
                 if (shouldDownload) {
-                    window.location.href = 'thank-you.html?download=true';
+                    window.location.href = 'v2-thank-you.html?download=true';
                 } else {
-                    window.location.href = 'thank-you.html';
+                    window.location.href = 'v2-thank-you.html';
                 }
             } else {
                 let errText = await res.text();
@@ -145,9 +145,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     btnEl.textContent = 'Redirecting...';
                     btnEl.style.backgroundColor = '#33A2B7';
                     if (shouldDownload) {
-                        window.location.href = 'thank-you.html?download=true';
+                        window.location.href = 'v2-thank-you.html?download=true';
                     } else {
-                        window.location.href = 'thank-you.html';
+                        window.location.href = 'v2-thank-you.html';
                     }
                 } else {
                     console.error('LeadSquared error:', errText);
