@@ -66,6 +66,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const emailEl = formEl.querySelector('[name="email"]');
         const email = emailEl ? emailEl.value.trim() : '';
 
+        const stateEl = formEl.querySelector('[name="state"]');
+        const state = stateEl ? stateEl.value : '';
+
         const statusEl = formEl.querySelector('[name="status"]');
         const status = statusEl ? statusEl.value : '';
 
@@ -89,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { Attribute: 'LastName',         Value: lastName  },
             { Attribute: 'Phone',            Value: phone     },
             { Attribute: 'EmailAddress',     Value: email     },
+            { Attribute: 'State',            Value: state     },
             { Attribute: 'mx_Qualification', Value: status    },
             { Attribute: 'Notes',            Value: goal      },
             { Attribute: 'Source',           Value: 'UGBIP Landing Page' },
