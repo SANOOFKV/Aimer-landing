@@ -52,6 +52,10 @@
             background-color: rgba(51, 162, 183, 0.1);
             border-radius: 8px;
         }
+        #manual-download-container {
+            display: none;
+            margin-top: 1.5rem;
+        }
     </style>
 </head>
 <body>
@@ -67,6 +71,11 @@
             <div id="download-message">
                 <i data-lucide="download" style="display:inline-block; vertical-align:middle; width:20px; height:20px; margin-right:8px;"></i>
                 <span style="vertical-align:middle;">Your brochure is downloading automatically...</span>
+            </div>
+            
+            <div id="manual-download-container">
+                <p style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">If the download didn't start automatically:</p>
+                <a href="UGBIP-Brochure.pdf" target="_blank" class="btn btn-primary" style="background-color: #e67e22; border-color: #e67e22;">Download Brochure Now</a>
             </div>
         </div>
     </section>
@@ -90,15 +99,21 @@
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('download') === 'true') {
                 const downloadMsg = document.getElementById('download-message');
+                const manualContainer = document.getElementById('manual-download-container');
                 downloadMsg.style.display = 'block';
+                manualContainer.style.display = 'block';
 
                 setTimeout(() => {
-                    const link = document.createElement('a');
-                    link.href = 'UGBIP-Brochure.pdf';
-                    link.download = 'UGBIP_Brochure.pdf';
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
+                    try {
+                        const link = document.createElement('a');
+                        link.href = 'UGBIP-Brochure.pdf';
+                        link.download = 'UGBIP_Brochure.pdf';
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } catch(e) {
+                        console.error('Safari blocked auto-download', e);
+                    }
                 }, 1000); // Small delay so the user sees the page first
             }
         });
