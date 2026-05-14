@@ -509,6 +509,13 @@ h1, h2, h3, h4, h5, h6, .stat-number {
     transform: translateY(0);
 }
 
+.popup-title {
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
 .popup-close {
     position: absolute;
     top: 1.5rem;
@@ -549,6 +556,7 @@ h1, h2, h3, h4, h5, h6, .stat-number {
 @media (max-width: 767px) {
     .display-title { font-size: 2.5rem; }
     .section-title { font-size: 2rem; }
+    .popup-title { font-size: 1.3rem; white-space: normal; }
     .hero-subtext { font-size: 1.15rem; }
     .hero-actions { flex-direction: column; }
     .stats-grid { grid-template-columns: 1fr; }
