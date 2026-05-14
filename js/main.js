@@ -119,9 +119,31 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = 'thank-you.html';
                 }
             } else {
-                const err = await res.text();
-                console.error('LeadSquared error:', err);
-                throw new Error('CRM error');
+                let errText = await res.text();
+                let isDuplicate = false;
+                
+                try {
+                    const errData = JSON.parse(errText);
+                    if (errData.ExceptionType === 'MXDuplicateEntryException') {
+                        isDuplicate = true;
+                    }
+                } catch(e) {
+                    // Not valid JSON
+                }
+
+                if (isDuplicate) {
+                    console.log('Duplicate lead detected. Proceeding as success.');
+                    btnEl.textContent = 'Redirecting...';
+                    btnEl.style.backgroundColor = '#33A2B7';
+                    if (shouldDownload) {
+                        window.location.href = 'thank-you.html?download=true';
+                    } else {
+                        window.location.href = 'thank-you.html';
+                    }
+                } else {
+                    console.error('LeadSquared error:', errText);
+                    throw new Error('CRM error');
+                }
             }
         } catch (err) {
             btnEl.textContent = '✗ Error — Try again';
