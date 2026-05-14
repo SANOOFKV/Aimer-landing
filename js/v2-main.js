@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { Attribute: 'LastName',         Value: lastName  },
             { Attribute: 'Phone',            Value: phone     },
             { Attribute: 'EmailAddress',     Value: email     },
-            { Attribute: 'State',            Value: state     },
+            { Attribute: 'mx_State',         Value: state     },
             { Attribute: 'mx_Qualification', Value: status    },
             { Attribute: 'Notes',            Value: goal      },
             { Attribute: 'Source',           Value: 'UGBIP Landing Page' },
