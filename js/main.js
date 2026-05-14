@@ -65,7 +65,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const email  = formEl.querySelector('[name="email"]')?.value.trim() || '';
         const status = formEl.querySelector('[name="status"]')?.value || '';
-        const goal   = formEl.querySelector('[name="goal"]')?.value || '';
+        let goal   = formEl.querySelector('[name="goal"]')?.value || '';
+
+        // Expand short values back to full sentences for the Notes field
+        const goalMapping = {
+            'placed': 'Get placed in a top company',
+            'startup': 'Start my own business / startup',
+            'network': 'Build a strong professional network',
+            'career_path': 'Figure out the right career path for me',
+            'all': 'All of the above'
+        };
+        if (goalMapping[goal]) {
+            goal = goalMapping[goal];
+        }
 
         const payload = [
             { Attribute: 'FirstName',        Value: firstName },
