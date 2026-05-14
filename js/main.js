@@ -97,31 +97,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (res.ok) {
-                btnEl.textContent = '✓ Submitted!';
+                btnEl.textContent = 'Redirecting...';
                 btnEl.style.backgroundColor = '#33A2B7';
-                formEl.reset();
-
-                // Trigger PDF download if applicable
+                
+                // Redirect to thank you page
                 if (shouldDownload) {
-                    try {
-                        const link = document.createElement('a');
-                        link.href = 'UGBIP-Brochure.pdf';
-                        link.download = 'UGBIP_Brochure.pdf';
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
-                    } catch (downloadErr) {
-                        console.error('Download failed or blocked by browser:', downloadErr);
-                        window.open('UGBIP-Brochure.pdf', '_blank'); // fallback
-                    }
+                    window.location.href = 'thank-you.html?download=true';
+                } else {
+                    window.location.href = 'thank-you.html';
                 }
-
-                setTimeout(() => {
-                    popup && popup.classList.remove('show');
-                    btnEl.textContent = originalText;
-                    btnEl.disabled = false;
-                    btnEl.style.backgroundColor = '';
-                }, 2500);
             } else {
                 const err = await res.text();
                 console.error('LeadSquared error:', err);

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - AIMER Business School</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .thank-you-section {
+            min-height: calc(100vh - 80px); /* Adjust based on footer size */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 4rem 1.5rem;
+            background-color: var(--color-background);
+        }
+        .thank-you-box {
+            max-width: 600px;
+            background: #fff;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .success-icon {
+            color: var(--color-primary);
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1.5rem;
+        }
+        .thank-you-title {
+            color: var(--color-text);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .thank-you-text {
+            color: var(--color-text-light);
+            font-size: 1.125rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        #download-message {
+            display: none;
+            color: var(--color-primary);
+            font-weight: 500;
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(51, 162, 183, 0.1);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="thank-you-section">
+        <div class="thank-you-box">
+            <i data-lucide="check-circle" class="success-icon"></i>
+            <h1 class="thank-you-title">Thank You!</h1>
+            <p class="thank-you-text">Your submission has been received successfully. Our admissions team will be in touch with you shortly to guide you through the next steps.</p>
+            
+            <a href="/" class="btn btn-primary">Return to Home</a>
+            
+            <div id="download-message">
+                <i data-lucide="download" style="display:inline-block; vertical-align:middle; width:20px; height:20px; margin-right:8px;"></i>
+                <span style="vertical-align:middle;">Your brochure is downloading automatically...</span>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container footer-content">
+            <div class="footer-left">
+                © 2026 AIMER Business School. All rights reserved.
+            </div>
+            <div class="footer-right">
+                corporate@aimerbschool.com · +91 74 500 30 800
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            // Check if we need to download the brochure
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('download') === 'true') {
+                const downloadMsg = document.getElementById('download-message');
+                downloadMsg.style.display = 'block';
+
+                setTimeout(() => {
+                    const link = document.createElement('a');
+                    link.href = 'UGBIP-Brochure.pdf';
+                    link.download = 'UGBIP_Brochure.pdf';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }, 1000); // Small delay so the user sees the page first
+            }
+        });
+    </script>
+</body>
+</html>
