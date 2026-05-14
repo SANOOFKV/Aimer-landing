@@ -63,9 +63,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const firstName = nameParts[0];
         const lastName  = nameParts.slice(1).join(' ') || '';
 
-        const email  = formEl.querySelector('[name="email"]')?.value.trim() || '';
-        const status = formEl.querySelector('[name="status"]')?.value || '';
-        let goal   = formEl.querySelector('[name="goal"]')?.value || '';
+        const emailEl = formEl.querySelector('[name="email"]');
+        const email = emailEl ? emailEl.value.trim() : '';
+
+        const statusEl = formEl.querySelector('[name="status"]');
+        const status = statusEl ? statusEl.value : '';
+
+        const goalEl = formEl.querySelector('[name="goal"]');
+        let goal = goalEl ? goalEl.value : '';
 
         // Expand short values back to full sentences for the Notes field
         const goalMapping = {
