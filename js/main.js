@@ -5,6 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // ─── LeadSquared Config ───────────────────────────────────────────────────
     const LSQ_URL = 'https://api-in21.leadsquared.com/v2/LeadManagement.svc/Lead.Create?accessKey=u$r0f83abac5915f1175344c491a1481e4a&secretKey=e23030c4b0cc1edc251ad61ce5340a9f6499c21d';
 
+    // ─── Google Sheets Web App Config ─────────────────────────────────────────
+    // Paste your Google Apps Script Web App URL below:
+    const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyAOac3M6BxktHQgBX96oLM_Pv2KCs5wp4CShDDqyUwCNpHEPNUbI3930j1IA_nP-jemg/exec';
+
 
     // ─── Popup Logic ──────────────────────────────────────────────────────────
     const popup    = document.getElementById('scroll-popup');
@@ -66,6 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const emailEl = formEl.querySelector('[name="email"]');
         const email = emailEl ? emailEl.value.trim() : '';
 
+        const stateEl = formEl.querySelector('[name="state"]');
+        const state = stateEl ? stateEl.value : '';
+
         const statusEl = formEl.querySelector('[name="status"]');
         const status = statusEl ? statusEl.value : '';
 
@@ -89,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { Attribute: 'LastName',         Value: lastName  },
             { Attribute: 'Phone',            Value: phone     },
             { Attribute: 'EmailAddress',     Value: email     },
+            { Attribute: 'mx_State',         Value: state     },
             { Attribute: 'mx_Qualification', Value: status    },
             { Attribute: 'Notes',            Value: goal      },
             { Attribute: 'Source',           Value: 'UGBIP Landing Page' },
@@ -105,6 +113,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const originalText = btnEl.textContent;
         btnEl.textContent = 'Submitting…';
         btnEl.disabled = true;
+
+        // Non-blocking submission to Google Sheets
+        if (GOOGLE_SHEET_URL) {
+            fetch(GOOGLE_SHEET_URL, {
+                method: 'POST',
+                body: JSON.stringify({
+                    name, phone, email, state, status, goal, utmSource, utmMedium, utmCampaign
+                })
+            }).catch(err => console.error('Google Sheet Error:', err));
+        }
 
         try {
             const res = await fetch(LSQ_URL, {
