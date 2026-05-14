@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ─── Google Sheets Web App Config ─────────────────────────────────────────
     // Paste your Google Apps Script Web App URL below:
-    const GOOGLE_SHEET_URL = '';
+    const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyAOac3M6BxktHQgBX96oLM_Pv2KCs5wp4CShDDqyUwCNpHEPNUbI3930j1IA_nP-jemg/exec';
 
 
     // ─── Popup Logic ──────────────────────────────────────────────────────────
