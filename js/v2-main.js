@@ -64,20 +64,46 @@ document.addEventListener('DOMContentLoaded', () => {
         const name   = formEl.querySelector('[name="name"]').value.trim();
         const rawPhone = formEl.querySelector('[name="phone"]').value.trim();
 
-        // 1. Validate characters: only allow numbers, spaces, and standard symbols (+, -, ())
-        const phoneRegex = /^[0-9\s+\-()]+$/;
-        if (!phoneRegex.test(rawPhone)) {
-            alert('Please enter a valid phone number containing only numbers and standard symbols (+, -, ()).');
+        // ─── Name Validation ──────────────────────────────────────────────────
+        if (name.length < 3) {
+            alert('Please enter your full name (at least 3 characters).');
+            return;
+        }
+        if (!/^[a-zA-Z\s.']+$/.test(name)) {
+            alert('Please enter a valid name containing only letters, spaces, dots, or apostrophes.');
             return;
         }
 
-        // 2. Clean phone number (keep only digits) to check digit count
-        const phoneClean = rawPhone.replace(/\D/g, '');
+        // ─── Phone Validation ─────────────────────────────────────────────────
+        // 1. Character Check: Must start with optional + and contain only digits, spaces, hyphens, and parentheses
+        if (!/^\+?[0-9\s\-()]+$/.test(rawPhone)) {
+            alert('Please enter a valid phone number containing only digits and standard symbols (+, -, ()).');
+            return;
+        }
 
-        // 3. Validation: length must be between 7 and 15 digits
+        // 2. Digit Length check
+        const phoneClean = rawPhone.replace(/\D/g, '');
         if (phoneClean.length < 7 || phoneClean.length > 15) {
             alert('Please enter a valid phone number (between 7 to 15 digits).');
             return;
+        }
+
+        // 3. Indian Mobile Number Series Check
+        if (phoneClean.length === 10) {
+            if (!/^[6-9]/.test(phoneClean)) {
+                alert('Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9.');
+                return;
+            }
+        } else if (phoneClean.length === 12 && phoneClean.startsWith('91')) {
+            if (!/^[6-9]/.test(phoneClean.substring(2))) {
+                alert('Please enter a valid Indian mobile number starting with 6, 7, 8, or 9.');
+                return;
+            }
+        } else if (phoneClean.length === 11 && phoneClean.startsWith('0')) {
+            if (!/^[6-9]/.test(phoneClean.substring(1))) {
+                alert('Please enter a valid Indian mobile number starting with 6, 7, 8, or 9.');
+                return;
+            }
         }
 
         const phone = rawPhone; // Keep formatting for CRM/Google Sheet
