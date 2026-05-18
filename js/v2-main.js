@@ -62,7 +62,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // ─── Lead Submit ──────────────────────────────────────────────────────────
     async function submitLead(formEl, btnEl, shouldDownload = false) {
         const name   = formEl.querySelector('[name="name"]').value.trim();
-        const phone  = formEl.querySelector('[name="phone"]').value.trim();
+        const rawPhone = formEl.querySelector('[name="phone"]').value.trim();
+
+        // 1. Validate characters: only allow numbers, spaces, and standard symbols (+, -, ())
+        const phoneRegex = /^[0-9\s+\-()]+$/;
+        if (!phoneRegex.test(rawPhone)) {
+            alert('Please enter a valid phone number containing only numbers and standard symbols (+, -, ()).');
+            return;
+        }
+
+        // 2. Clean phone number (keep only digits) to check digit count
+        const phoneClean = rawPhone.replace(/\D/g, '');
+
+        // 3. Validation: length must be between 7 and 15 digits
+        if (phoneClean.length < 7 || phoneClean.length > 15) {
+            alert('Please enter a valid phone number (between 7 to 15 digits).');
+            return;
+        }
+
+        const phone = rawPhone; // Keep formatting for CRM/Google Sheet
         const nameParts = name.split(' ');
         const firstName = nameParts[0];
         const lastName  = nameParts.slice(1).join(' ') || '';
