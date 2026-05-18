@@ -61,47 +61,77 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ─── Lead Submit ──────────────────────────────────────────────────────────
     async function submitLead(formEl, btnEl, shouldDownload = false) {
-        const name   = formEl.querySelector('[name="name"]').value.trim();
-        const rawPhone = formEl.querySelector('[name="phone"]').value.trim();
+        const nameEl = formEl.querySelector('[name="name"]');
+        const phoneEl = formEl.querySelector('[name="phone"]');
+
+        const name   = nameEl.value.trim();
+        const rawPhone = phoneEl.value.trim();
+
+        // Helper: Clear previous errors
+        function clearErrors() {
+            formEl.querySelectorAll('input.invalid, select.invalid').forEach(el => {
+                el.classList.remove('invalid');
+            });
+            formEl.querySelectorAll('.error-message').forEach(el => {
+                el.remove();
+            });
+        }
+
+        // Helper: Show inline validation error
+        function showError(inputEl, message) {
+            inputEl.classList.add('invalid');
+            const group = inputEl.closest('.form-group');
+            let error = group.querySelector('.error-message');
+            if (!error) {
+                error = document.createElement('span');
+                error.className = 'error-message';
+                group.appendChild(error);
+            }
+            error.textContent = message;
+            inputEl.focus();
+        }
+
+        // 1. Clear previous errors
+        clearErrors();
 
         // ─── Name Validation ──────────────────────────────────────────────────
         if (name.length < 3) {
-            alert('Please enter your full name (at least 3 characters).');
+            showError(nameEl, 'Please enter your full name (at least 3 characters).');
             return;
         }
         if (!/^[a-zA-Z\s.']+$/.test(name)) {
-            alert('Please enter a valid name containing only letters, spaces, dots, or apostrophes.');
+            showError(nameEl, 'Please enter a valid name containing only letters, spaces, dots, or apostrophes.');
             return;
         }
 
         // ─── Phone Validation ─────────────────────────────────────────────────
         // 1. Character Check: Must start with optional + and contain only digits, spaces, hyphens, and parentheses
         if (!/^\+?[0-9\s\-()]+$/.test(rawPhone)) {
-            alert('Please enter a valid phone number containing only digits and standard symbols (+, -, ()).');
+            showError(phoneEl, 'Please enter a valid phone number containing only digits and standard symbols (+, -, ()).');
             return;
         }
 
         // 2. Digit Length check
         const phoneClean = rawPhone.replace(/\D/g, '');
         if (phoneClean.length < 7 || phoneClean.length > 15) {
-            alert('Please enter a valid phone number (between 7 to 15 digits).');
+            showError(phoneEl, 'Please enter a valid phone number (between 7 to 15 digits).');
             return;
         }
 
         // 3. Indian Mobile Number Series Check
         if (phoneClean.length === 10) {
             if (!/^[6-9]/.test(phoneClean)) {
-                alert('Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9.');
+                showError(phoneEl, 'Please enter a valid 10-digit Indian mobile number starting with 6, 7, 8, or 9.');
                 return;
             }
         } else if (phoneClean.length === 12 && phoneClean.startsWith('91')) {
             if (!/^[6-9]/.test(phoneClean.substring(2))) {
-                alert('Please enter a valid Indian mobile number starting with 6, 7, 8, or 9.');
+                showError(phoneEl, 'Please enter a valid Indian mobile number starting with 6, 7, 8, or 9.');
                 return;
             }
         } else if (phoneClean.length === 11 && phoneClean.startsWith('0')) {
             if (!/^[6-9]/.test(phoneClean.substring(1))) {
-                alert('Please enter a valid Indian mobile number starting with 6, 7, 8, or 9.');
+                showError(phoneEl, 'Please enter a valid Indian mobile number starting with 6, 7, 8, or 9.');
                 return;
             }
         }
@@ -213,13 +243,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         } catch (err) {
-            btnEl.textContent = '✗ Error — Try again';
-            btnEl.style.backgroundColor = '#c0392b';
-            setTimeout(() => {
-                btnEl.textContent = originalText;
-                btnEl.disabled = false;
-                btnEl.style.backgroundColor = '';
-            }, 3000);
+            console.error('Submission error:', err);
+            
+            // Revert button instantly to normal state, no error styling
+            btnEl.textContent = originalText;
+            btnEl.disabled = false;
+            btnEl.style.backgroundColor = '';
+            
+            // Show inline indication of invalid/rejected number under phone field
+            showError(phoneEl, 'Failed to submit. Please check your phone number and try again.');
         }
     }
 

@@ -439,6 +439,27 @@ h1, h2, h3, h4, h5, h6, .stat-number {
     border-color: var(--color-primary);
 }
 
+/* Inline Form Validation Styles */
+.form-group input.invalid,
+.form-group select.invalid {
+    border-color: #c0392b !important;
+    background-color: #fdf2f2 !important;
+}
+
+.error-message {
+    color: #c0392b;
+    font-size: 0.8rem;
+    margin-top: 0.35rem;
+    display: block;
+    font-weight: 500;
+    animation: fieldFadeIn 0.3s ease;
+}
+
+@keyframes fieldFadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 .select-wrapper {
     position: relative;
 }
